@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:typed_data';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
@@ -13,23 +12,22 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp( {Key? key}) : super(key: key);
-
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title:const Text("Printing")),
+        appBar: AppBar(title: const Text("Printer")),
         body: PdfPreview(
-          build: (format) => _generatePdf(format,),
+          build: (format) => _generatePdf(format, "Printer"),
         ),
       ),
     );
   }
 
-  Future<Uint8List> _generatePdf(PdfPageFormat format, ) async {
-    final pdf = pw.Document();
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
 
     pdf.addPage(
@@ -38,12 +36,10 @@ class MyApp extends StatelessWidget {
         build: (context) {
           return pw.Column(
             children: [
-            
               pw.SizedBox(
                 width: double.infinity,
                 child: pw.FittedBox(
-                  child:
-                      pw.Text("Hello  Word", style: pw.TextStyle(font: font)),
+                  child: pw.Text(title, style: pw.TextStyle(font: font)),
                 ),
               ),
               pw.SizedBox(height: 20),
